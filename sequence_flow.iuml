@@ -1,0 +1,60 @@
+@startuml
+
+participant Customer_App
+participant IoT_Blockchain
+participant Cloud_IoT
+
+autoactivate on 
+par
+	activate Customer_App
+    Customer_App -> Customer_App ++ #Red: App \nConfig & Setup
+	deactivate Customer_App
+    else
+    
+	IoT_Blockchain -> IoT_Blockchain ++ #Green : Blockchain \nConfig & Setup
+	deactivate IoT_Blockchain
+    else
+    activate Cloud_IoT
+    Cloud_IoT -> Cloud_IoT ++ #Blue: Cloud \nConfig & Setup
+    note right : Infrastructure Configuration
+    deactivate Cloud_IoT
+
+end
+
+	
+	IoT_Blockchain -> Cloud_IoT #Blue: IoT Blockchain \nready for configuration
+	deactivate IoT_Blockchain
+    
+    
+    Cloud_IoT -> IoT_Blockchain #Green: Resource half \nConfiguration
+  	deactivate IoT_Blockchain
+    deactivate Cloud_IoT
+    
+    IoT_Blockchain -> Customer_App #Red: Perform \nDiscovery
+	deactivate IoT_Blockchain
+    
+    Customer_App -> IoT_Blockchain #Green: Replies \nwith Identification
+	deactivate IoT_Blockchain
+    deactivate Customer_App
+    
+    IoT_Blockchain -> Cloud_IoT #Blue: Resource \nData Structure
+ 	deactivate IoT_Blockchain
+    
+    
+    Cloud_IoT -> IoT_Blockchain #Green: Resource Full \nConfiguration
+    deactivate IoT_Blockchain
+    deactivate Cloud_IoT
+    note right : Configuration Flow
+   
+   
+    IoT_Blockchain -> Customer_App #Red: Configure \nApp
+	deactivate IoT_Blockchain
+    
+	
+    Customer_App -> IoT_Blockchain #Green: Customer App \nsend transactions \nto IoT Blockchain
+ 	deactivate IoT_Blockchain
+    
+    IoT_Blockchain -> Cloud_IoT #Blue: Forward data \nto Cloud Hub
+	deactivate IoT_Blockchain
+    note right : Data Flow
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+
+
+package "1_Customer_App" {
+  	Customer_Wallet <..> [Customer_Order]
+  	
+}
+ 
+package "2_IoT_Blockchain" {
+	Customer_Wallet --> IoT_Wallet 
+    package "smart_contracts" {
+    	IoT_Wallet  --> [Work Order]
+ 		[Work Order] ..> [Stocks]
+        [Stocks] ..> [Goods Shipments]
+    }
+    [Goods Shipments] ..> IoT_Wallet
+}
+ 
+cloud "3_Cloud_IoT_Blockchain" {
+  	package "Cloud_IoT" {
+    	[Progress] ..> [Completeness]
+    	IoT_Wallet --> Main_Wallet
+        Main_Wallet --> [Progress]
+    }
+    [Completeness] ..> Main_Wallet
+    Customer_Wallet <-- Main_Wallet
+}
+
+@enduml

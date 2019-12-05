@@ -1,0 +1,45 @@
+@startuml
+class ItemDaoBasic_Item << struct >> {
+  uint256 id
+  address owner
+  uint version
+  string title
+  int inventory
+  uint256 index
+}
+
+interface ItemDao {
+  
+}
+
+interface ItemService {
+  
+}
+
+class ItemServiceBasic << contract >> {
+  
+}
+
+class ItemDaoBasic << contract >> {
+  -itemMapping /'@mapping{uint256:Item}'/
+  -uint256[] itemIndex
+  -uint256 nextId
+  address ownerContract
+  ItemDaoBasic_Item Item /'@struct'/
+  ItemEvent(uint256 id, address owner, uint version, string title, int inventory, uint256 index, string eventType) /'@event'/
+  DebugEvent(uint256 index) /'@event'/
+  +read(uint256 _id) /'@returns{id:uint256, owner:address, version:uint, title:string, inventory:int, index:uint256} @view'/
+  +uint256 create(string _title, int _inventory) /'@external'/
+  +update(uint256 _id, string _title, int _inventory) /'@external'/
+  +remove(uint256 _id) /'@external'/
+  +uint256 count() /'@constant @external'/
+  +readByIndex(uint256 _index) /'@returns{id:uint256, owner:address, version:uint, title:string, inventory:int, index:uint256} @constant @external'/
+  -bool _exists(uint256 _id) /'@view'/
+}
+
+ItemService <|-- ItemServiceBasic
+Item <.. ItemDaoBasic
+ItemDaoBasic_Item --+ ItemDaoBasic
+ItemDaoBasic_Item <.. ItemDaoBasic
+ItemDao <|-- ItemDaoBasic
+@enduml
